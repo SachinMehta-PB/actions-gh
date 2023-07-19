@@ -41,3 +41,5 @@ jobs:
 
           # Use the 'gh' CLI to create the issue comment via GitHub API
           gh api -X POST -H "Content-Type: application/json" -f body="$COMMENT_BODY" "repos/$REPO_OWNER/$REPO_NAME/issues/$ISSUE_NUMBER/comments"
+        env:
+          GH_TOKEN: ${{ github.token }}
