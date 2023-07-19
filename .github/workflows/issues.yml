@@ -25,3 +25,30 @@ jobs:
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
           
+  create-comment:
+    name: Create Issue Comment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create comment with API
+        run: |
+          # Extract the repository owner and name from the GITHUB_REPOSITORY environment variable
+          IFS='/' read -ra REPO <<< "$GITHUB_REPOSITORY"
+          REPO_OWNER="${REPO[0]}"
+          REPO_NAME="${REPO[1]}"
+
+          # Replace {issue_number} with the actual issue number where you want to post the comment
+          ISSUE_NUMBER=${{github.event.issue.number}}
+
+          # Replace {comment_body} with the content of your comment
+          COMMENT_BODY="Hello! This is a test comment from GitHub Actions."
+
+          # Use the 'gh' CLI to create the issue comment via GitHub API
+          gh api -X POST -H "Content-Type: application/json" -f body="$COMMENT_BODY" "repos/$REPO_OWNER/$REPO_NAME/issues/$ISSUE_NUMBER/comments"
+          
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTOR }}
+          
+
+
+          
